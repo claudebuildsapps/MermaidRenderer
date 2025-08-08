@@ -774,12 +774,6 @@ function App() {
           <button onClick={renderDiagram} className="btn btn-success">
             ⚡ Render
           </button>
-          <button 
-            onClick={() => setShowExamples(!showExamples)} 
-            className="btn btn-secondary"
-          >
-            {showExamples ? '📝 Hide Examples' : '🎨 Show Examples'}
-          </button>
           <input
             ref={fileInputRef}
             type="file"
@@ -825,31 +819,6 @@ function App() {
       </header>
       
       
-      {showExamples && (
-        <div className="examples">
-          <h3>Showcase Diagrams:</h3>
-          {Object.entries(EXAMPLE_CATEGORIES).map(([category, examples]) => (
-            <div key={category} className="example-category">
-              <h4>{category}</h4>
-              <div className="example-buttons">
-                {Object.entries(examples).map(([name, code]) => {
-                  const key = name.toLowerCase().replace(/\s+/g, '_');
-                  return (
-                    <button 
-                      key={key}
-                      onClick={() => loadExample(key)}
-                      className={currentExample === key ? 'active' : ''}
-                      title={`${name} - ${category}`}
-                    >
-                      {name}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
       
       <div className="main">
         {showEditor && (
@@ -862,13 +831,50 @@ function App() {
               >
                 {showEditor ? '⬅ Hide' : '➡ Show'}
               </button>
+              <button 
+                onClick={() => setShowExamples(!showExamples)} 
+                className="btn btn-secondary"
+              >
+                {showExamples ? '📝 Code' : '🎨 Examples'}
+              </button>
               {fileName && <span className="file-name">{fileName}</span>}
             </div>
-            <textarea
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="Enter Mermaid diagram code..."
-            />
+            {showExamples ? (
+              <div className="examples-browser">
+                <h3>Showcase Diagrams</h3>
+                <div className="examples-list">
+                  {Object.entries(EXAMPLE_CATEGORIES).map(([category, examples]) => (
+                    <div key={category} className="example-category">
+                      <h4>{category}</h4>
+                      <div className="example-buttons">
+                        {Object.entries(examples).map(([name, code]) => {
+                          const key = name.toLowerCase().replace(/\s+/g, '_');
+                          return (
+                            <button 
+                              key={key}
+                              onClick={() => {
+                                loadExample(key);
+                                setShowExamples(false);
+                              }}
+                              className={currentExample === key ? 'active' : ''}
+                              title={`${name} - ${category}`}
+                            >
+                              {name}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <textarea
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Enter Mermaid diagram code..."
+              />
+            )}
           </div>
         )}
         
