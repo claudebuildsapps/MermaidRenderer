@@ -258,6 +258,374 @@ const EXAMPLE_CATEGORIES = {
     Note over SHP: Package ships
     SHP->>EMAIL: Shipping notification
     EMAIL-->>C: Tracking email`
+  },
+  
+  'Specialized Systems': {
+    'Social Media Analytics': `pie title Social Media Engagement Distribution
+    "Instagram" : 35
+    "Twitter" : 25
+    "Facebook" : 20
+    "LinkedIn" : 12
+    "TikTok" : 5
+    "YouTube" : 3`,
+    
+    'Healthcare Patient Portal': `mindmap
+  root((Patient Portal))
+    Appointments
+      Schedule New
+      View Upcoming
+      Cancel/Reschedule
+      Virtual Visits
+        Video Chat
+        Phone Call
+    Medical Records
+      Lab Results
+      Imaging Reports
+      Prescription History
+      Vaccination Records
+      Insurance Info
+    Communication
+      Message Provider
+      Appointment Reminders
+      Test Result Notifications
+      Prescription Refill Alerts
+    Health Tracking
+      Vital Signs
+      Symptoms Log
+      Medication Tracker
+      Exercise Log
+    Billing
+      View Statements
+      Payment History
+      Insurance Claims
+      Payment Plans`,
+    
+    'Financial Trading Platform': `flowchart TD
+    A[User Login] --> B[Account Verification]
+    B --> C{Account Type?}
+    C -->|Basic| D[Limited Trading]
+    C -->|Premium| E[Full Access]
+    C -->|Professional| F[Advanced Tools]
+    
+    D --> G[Market Data]
+    E --> G
+    F --> G
+    
+    G --> H[Select Asset]
+    H --> I[Analyze Charts]
+    I --> J{Trading Decision}
+    J -->|Buy| K[Create Buy Order]
+    J -->|Sell| L[Create Sell Order]
+    J -->|Hold| M[Monitor Position]
+    
+    K --> N[Order Validation]
+    L --> N
+    N --> O{Sufficient Funds?}
+    O -->|No| P[Reject Order]
+    O -->|Yes| Q[Execute Trade]
+    
+    Q --> R[Update Portfolio]
+    R --> S[Send Confirmation]
+    S --> T[Risk Assessment]
+    T --> U[Generate Reports]
+    
+    M --> V[Price Alerts]
+    V --> W{Alert Triggered?}
+    W -->|Yes| G
+    W -->|No| V`
+  },
+  
+  'Advanced Architecture': {
+    'Smart Home IoT': `graph TB
+    subgraph "Home Network"
+        R[WiFi Router] --> H[Smart Hub]
+        H --> T1[Temperature Sensors]
+        H --> L1[Smart Lights]
+        H --> S1[Security Cameras]
+        H --> D1[Door Locks]
+        H --> A1[Appliances]
+        
+        T1 --> T2[Living Room]
+        T1 --> T3[Bedroom]
+        T1 --> T4[Kitchen]
+        
+        L1 --> L2[LED Strips]
+        L1 --> L3[Bulbs]
+        L1 --> L4[Motion Sensors]
+        
+        S1 --> S2[Front Door]
+        S1 --> S3[Backyard]
+        S1 --> S4[Garage]
+        
+        D1 --> D2[Main Entry]
+        D1 --> D3[Garage Door]
+        
+        A1 --> A2[Smart Thermostat]
+        A1 --> A3[Washing Machine]
+        A1 --> A4[Coffee Maker]
+    end
+    
+    subgraph "Cloud Services"
+        C[Cloud Platform] --> AI[AI Processing]
+        C --> DB[Device Database]
+        C --> AN[Analytics Engine]
+    end
+    
+    subgraph "User Interfaces"
+        M[Mobile App] --> C
+        V[Voice Assistant] --> C
+        W[Web Dashboard] --> C
+    end
+    
+    R --> I[Internet]
+    I --> C
+    
+    style H fill:#e1f5fe
+    style C fill:#f3e5f5
+    style M fill:#e8f5e8`,
+    
+    'Video Streaming State Machine': `stateDiagram-v2
+    [*] --> Idle
+    
+    Idle --> Loading : User selects video
+    Loading --> Buffering : Metadata loaded
+    Loading --> Error : Load failed
+    
+    Buffering --> Playing : Buffer sufficient
+    Buffering --> Error : Buffer failed
+    
+    Playing --> Paused : User pauses
+    Playing --> Buffering : Buffer empty
+    Playing --> Seeking : User seeks
+    Playing --> Ended : Video complete
+    Playing --> Error : Playback error
+    
+    Paused --> Playing : User resumes
+    Paused --> Seeking : User seeks
+    Paused --> Idle : User stops
+    
+    Seeking --> Buffering : Seek complete
+    Seeking --> Error : Seek failed
+    
+    Ended --> Idle : User exits
+    Ended --> Loading : Auto-next video
+    
+    Error --> Idle : User retries
+    Error --> Loading : Auto-retry
+    
+    state Playing {
+        [*] --> StandardQuality
+        StandardQuality --> HDQuality : Network good
+        StandardQuality --> LowQuality : Network poor
+        HDQuality --> StandardQuality : Network degraded
+        LowQuality --> StandardQuality : Network improved
+    }`,
+    
+    'Cryptocurrency Exchange': `sequenceDiagram
+    participant U as User
+    participant UI as Trading Interface
+    participant OE as Order Engine
+    participant MB as Match Book
+    participant WS as Wallet Service
+    participant BC as Blockchain
+    participant KYC as KYC Service
+    participant N as Notification Service
+    
+    U->>UI: Login & 2FA
+    UI->>KYC: Verify identity
+    KYC-->>UI: Identity confirmed
+    
+    U->>UI: Place buy order (BTC/USD)
+    UI->>OE: Submit order request
+    OE->>WS: Check USD balance
+    WS-->>OE: Balance confirmed
+    OE->>MB: Add to order book
+    
+    Note over MB: Matching algorithm runs
+    MB->>MB: Find matching sell order
+    MB->>OE: Orders matched
+    
+    OE->>WS: Transfer USD to seller
+    OE->>WS: Transfer BTC to buyer
+    WS->>BC: Record BTC transaction
+    BC-->>WS: Transaction confirmed
+    
+    OE->>N: Trade executed event
+    N->>U: Push notification
+    N->>UI: Update portfolio
+    UI-->>U: Display updated balances
+    
+    par Settlement
+        WS->>BC: Batch withdrawal requests
+    and Reporting
+        OE->>N: Daily trading summary
+        N->>U: Email report
+    end`,
+    
+    'Gaming Leaderboard': `classDiagram
+    class Player {
+        +UUID playerId
+        +String username
+        +String email
+        +DateTime joinDate
+        +Int totalScore
+        +Int gamesPlayed
+        +Double winRate
+        +updateScore(points)
+        +getStats()
+        +resetStats()
+    }
+    
+    class Game {
+        +UUID gameId
+        +String gameName
+        +GameType type
+        +DateTime startTime
+        +DateTime endTime
+        +GameStatus status
+        +Int maxPlayers
+        +startGame()
+        +endGame()
+        +addPlayer()
+        +removePlayer()
+    }
+    
+    class GameSession {
+        +UUID sessionId
+        +UUID gameId
+        +UUID playerId
+        +Int score
+        +DateTime sessionStart
+        +DateTime sessionEnd
+        +Int rank
+        +calculateRank()
+        +updateScore()
+    }
+    
+    class Leaderboard {
+        +UUID leaderboardId
+        +String name
+        +LeaderboardType type
+        +DateTime periodStart
+        +DateTime periodEnd
+        +List~Player~ topPlayers
+        +updateRankings()
+        +getTopN(n)
+        +resetPeriod()
+    }
+    
+    class Achievement {
+        +UUID achievementId
+        +String name
+        +String description
+        +AchievementType type
+        +Int pointValue
+        +String iconUrl
+        +checkCriteria()
+    }
+    
+    class PlayerAchievement {
+        +UUID playerAchievementId
+        +UUID playerId
+        +UUID achievementId
+        +DateTime earnedDate
+        +Boolean isDisplayed
+    }
+    
+    class Tournament {
+        +UUID tournamentId
+        +String name
+        +DateTime startDate
+        +DateTime endDate
+        +Int entryFee
+        +Int prizePool
+        +TournamentStatus status
+        +List~Player~ participants
+        +registerPlayer()
+        +calculatePrizes()
+        +generateBracket()
+    }
+    
+    Player "1" --> "many" GameSession : participates
+    Game "1" --> "many" GameSession : hosts
+    Player "many" --> "many" Leaderboard : ranked_in
+    Player "1" --> "many" PlayerAchievement : earns
+    Achievement "1" --> "many" PlayerAchievement : awarded_as
+    Tournament "1" --> "many" Player : includes
+    
+    <<enumeration>> GameType
+    GameType : PUZZLE
+    GameType : ACTION
+    GameType : STRATEGY
+    GameType : SPORTS
+    
+    <<enumeration>> LeaderboardType
+    LeaderboardType : DAILY
+    LeaderboardType : WEEKLY
+    LeaderboardType : MONTHLY
+    LeaderboardType : ALL_TIME`,
+    
+    'Food Delivery App': `mindmap
+  root((Food Delivery App))
+    User Management
+      Registration
+        Email/Phone
+        Social Login
+        Identity Verification
+      Profile
+        Preferences
+        Dietary Restrictions
+        Payment Methods
+        Delivery Addresses
+    Restaurant Management
+      Restaurant Onboarding
+        Business Verification
+        Menu Upload
+        Photo Management
+        Operating Hours
+      Order Management
+        Order Queue
+        Kitchen Display
+        Preparation Times
+        Status Updates
+    Delivery System
+      Driver Management
+        Driver Onboarding
+        Background Checks
+        Vehicle Registration
+        Availability Status
+      Route Optimization
+        GPS Tracking
+        Traffic Analysis
+        Multi-order Batching
+        ETA Calculation
+    Payment Processing
+      Multiple Payment Methods
+        Credit/Debit Cards
+        Digital Wallets
+        Cash on Delivery
+        Corporate Accounts
+      Transaction Management
+        Payment Gateway
+        Refund Processing
+        Commission Calculation
+        Financial Reporting
+    Order Lifecycle
+      Browse & Search
+        Restaurant Discovery
+        Menu Browsing
+        Reviews & Ratings
+        Filters & Sorting
+      Order Placement
+        Cart Management
+        Customization Options
+        Promo Code Application
+        Order Confirmation
+      Tracking & Delivery
+        Real-time Tracking
+        Push Notifications
+        Delivery Confirmation
+        Rating & Feedback`
   }
 };
 
@@ -271,8 +639,9 @@ Object.entries(EXAMPLE_CATEGORIES).forEach(([category, examples]) => {
 });
 
 function App() {
-  const [code, setCode] = useState(EXAMPLES.flowchart);
-  const [currentExample, setCurrentExample] = useState('flowchart');
+  const firstExampleKey = Object.keys(EXAMPLES)[0] || 'todo_app';
+  const [code, setCode] = useState(EXAMPLES[firstExampleKey] || EXAMPLES.todo_app || '');
+  const [currentExample, setCurrentExample] = useState(firstExampleKey);
   const [zoom, setZoom] = useState(1);
   const [fileName, setFileName] = useState('');
   const [showExamples, setShowExamples] = useState(false);
@@ -285,7 +654,7 @@ function App() {
   }, []);
 
   const renderDiagram = async () => {
-    if (diagramRef.current && code.trim()) {
+    if (diagramRef.current && code && code.trim()) {
       try {
         const { svg } = await mermaid.render('diagram', code);
         diagramRef.current.innerHTML = svg;
@@ -357,32 +726,69 @@ function App() {
       </header>
       
       <div className="controls">
-        <button onClick={renderDiagram} className="primary">Render</button>
-        <button onClick={() => setShowExamples(!showExamples)} className="secondary">
-          {showExamples ? 'Hide Examples' : 'Show Examples'}
-        </button>
-        <div className="zoom-controls">
-          <button onClick={() => handleZoom(0.8)}>−</button>
-          <span>{Math.round(zoom * 100)}%</span>
-          <button onClick={() => handleZoom(1.25)}>+</button>
-          <button onClick={resetZoom}>Reset</button>
+        <div className="controls-left">
+          <button onClick={renderDiagram} className="btn btn-success">
+            ⚡ Render
+          </button>
+          <button 
+            onClick={() => setShowExamples(!showExamples)} 
+            className="btn btn-secondary"
+          >
+            {showExamples ? '📝 Hide Examples' : '🎨 Show Examples'}
+          </button>
+        </div>
+        
+        <div className="controls-right">
+          <div className="zoom-controls">
+            <button 
+              onClick={() => handleZoom(0.8)} 
+              className="btn"
+              title="Zoom out"
+            >
+              −
+            </button>
+            <span className="zoom-display">{Math.round(zoom * 100)}%</span>
+            <button 
+              onClick={() => handleZoom(1.25)} 
+              className="btn"
+              title="Zoom in"
+            >
+              +
+            </button>
+            <button 
+              onClick={resetZoom} 
+              className="btn"
+              title="Reset zoom"
+            >
+              ↻
+            </button>
+          </div>
         </div>
       </div>
       
       {showExamples && (
         <div className="examples">
-          <h3>Example Diagrams:</h3>
-          <div className="example-buttons">
-            {Object.keys(EXAMPLES).map(key => (
-              <button 
-                key={key}
-                onClick={() => loadExample(key)}
-                className={currentExample === key ? 'active' : ''}
-              >
-                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-              </button>
-            ))}
-          </div>
+          <h3>Showcase Diagrams:</h3>
+          {Object.entries(EXAMPLE_CATEGORIES).map(([category, examples]) => (
+            <div key={category} className="example-category">
+              <h4>{category}</h4>
+              <div className="example-buttons">
+                {Object.entries(examples).map(([name, code]) => {
+                  const key = name.toLowerCase().replace(/\s+/g, '_');
+                  return (
+                    <button 
+                      key={key}
+                      onClick={() => loadExample(key)}
+                      className={currentExample === key ? 'active' : ''}
+                      title={`${name} - ${category}`}
+                    >
+                      {name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       )}
       
@@ -397,14 +803,14 @@ function App() {
               className="file-input"
               id="file-input"
             />
-            <label htmlFor="file-input" className="file-label">
-              Open File
+            <label htmlFor="file-input" className="btn btn-secondary">
+              📁 Open File
             </label>
-            <button onClick={downloadFile} className="file-label">
-              Save .mmd
+            <button onClick={downloadFile} className="btn btn-secondary">
+              💾 Save .mmd
             </button>
-            <button onClick={downloadSVG} className="file-label">
-              Export SVG
+            <button onClick={downloadSVG} className="btn btn-primary">
+              📤 Export SVG
             </button>
             {fileName && <span className="file-name">{fileName}</span>}
           </div>
