@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import mermaid from 'mermaid';
+import Sidebar from './Sidebar';
 import './App.css';
 
 // Comprehensive showcase diagrams organized by category
@@ -644,7 +645,7 @@ function App() {
   const [currentExample, setCurrentExample] = useState(firstExampleKey);
   const [zoom, setZoom] = useState(1);
   const [fileName, setFileName] = useState('');
-  const [showExamples, setShowExamples] = useState(false);
+  const [showExamples, setShowExamples] = useState(true);
   const [showEditor, setShowEditor] = useState(true);
   const diagramRef = useRef();
   const fileInputRef = useRef();
@@ -654,118 +655,145 @@ function App() {
       startOnLoad: false, 
       theme: 'base',
       themeVariables: {
-        // Ultra-light pastel colors
-        primaryColor: '#e0e7ff',
+        // Vibrant but soft pastel colors for diagram shapes
+        primaryColor: '#c7d2fe',
         primaryTextColor: '#475569',
-        primaryBorderColor: '#c7d2fe',
+        primaryBorderColor: '#a5b4fc',
         
-        // Secondary ultra-light pink
-        secondaryColor: '#fce7f3',
+        // Secondary vibrant pink
+        secondaryColor: '#f9a8d4',
         secondaryTextColor: '#475569',
-        secondaryBorderColor: '#f9d6e7',
+        secondaryBorderColor: '#f472b6',
         
-        // Tertiary ultra-light mint
-        tertiaryColor: '#d1fae5',
+        // Tertiary vibrant mint
+        tertiaryColor: '#86efac',
         tertiaryTextColor: '#475569',
-        tertiaryBorderColor: '#bbf7d0',
+        tertiaryBorderColor: '#4ade80',
         
-        // Background and surfaces
+        // Background and surfaces (light tints)
         background: '#fefefe',
-        mainBkg: '#fcfcfd',
-        secondBkg: '#f8fafc',
-        tertiaryBkg: '#f0f4ff',
+        mainBkg: '#f8fafc',
+        secondBkg: '#c7d2fe',
+        tertiaryBkg: '#f9a8d4',
         
-        // Lines and borders (very subtle)
-        lineColor: '#c7d2fe',
-        primaryBorderColor: '#e0e7ff',
-        secondaryBorderColor: '#fce7f3',
+        // Shape backgrounds (vibrant pastels)
+        c0: '#c7d2fe',    // Vibrant lavender
+        c1: '#f9a8d4',    // Vibrant pink
+        c2: '#86efac',    // Vibrant mint
+        c3: '#fde047',    // Vibrant yellow
+        c4: '#7dd3fc',    // Vibrant sky
+        c5: '#fb7185',    // Vibrant rose
+        c6: '#2dd4bf',    // Vibrant teal
+        c7: '#facc15',    // Vibrant gold
         
-        // Section backgrounds (extremely light)
-        sectionBkgColor: '#f0f4ff',
-        altSectionBkgColor: '#fef7f3',
+        // Lines and borders (visible)
+        lineColor: '#a5b4fc',
+        primaryBorderColor: '#a5b4fc',
+        secondaryBorderColor: '#f472b6',
         
-        // Grid and accents (very subtle)
-        gridColor: '#f1f5f9',
-        cScale0: '#e0e7ff',
-        cScale1: '#fce7f3',
-        cScale2: '#d1fae5',
-        cScale3: '#fef3c7',
-        cScale4: '#c7d2fe',
-        cScale5: '#f9d6e7',
-        cScale6: '#bbf7d0',
-        cScale7: '#fde68a',
+        // Section backgrounds (colorful)
+        sectionBkgColor: '#c7d2fe',
+        altSectionBkgColor: '#f9a8d4',
         
-        // Pie chart colors (ultra-light pastels)
-        pie1: '#e0e7ff',
-        pie2: '#fce7f3', 
-        pie3: '#d1fae5',
-        pie4: '#fef3c7',
-        pie5: '#c7d2fe',
-        pie6: '#f9d6e7',
-        pie7: '#bbf7d0',
-        pie8: '#fde68a',
-        pie9: '#f0f4ff',
-        pie10: '#fef7f3',
-        pie11: '#ecfdf5',
-        pie12: '#fffbeb'
+        // Grid and accents (vibrant)
+        gridColor: '#cbd5e1',
+        cScale0: '#c7d2fe',
+        cScale1: '#f9a8d4',
+        cScale2: '#86efac',
+        cScale3: '#fde047',
+        cScale4: '#7dd3fc',
+        cScale5: '#fb7185',
+        cScale6: '#2dd4bf',
+        cScale7: '#facc15',
+        
+        // Node and shape fills (vibrant pastels)
+        fill0: '#c7d2fe',
+        fill1: '#f9a8d4',
+        fill2: '#86efac',
+        fill3: '#fde047',
+        fill4: '#7dd3fc',
+        fill5: '#fb7185',
+        fill6: '#2dd4bf',
+        fill7: '#facc15',
+        
+        // Pie chart colors (vibrant pastels)
+        pie1: '#c7d2fe',
+        pie2: '#f9a8d4', 
+        pie3: '#86efac',
+        pie4: '#fde047',
+        pie5: '#7dd3fc',
+        pie6: '#fb7185',
+        pie7: '#2dd4bf',
+        pie8: '#facc15',
+        pie9: '#c084fc',
+        pie10: '#fbbf24',
+        pie11: '#34d399',
+        pie12: '#60a5fa'
       }
     });
     renderDiagram();
 
-    // Re-fit diagram on window resize
-    const handleResize = () => {
-      if (diagramRef.current?.querySelector('svg')) {
-        setTimeout(autoFitDiagram, 200);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const renderDiagram = async () => {
-    if (diagramRef.current && code && code.trim()) {
-      try {
-        const { svg } = await mermaid.render('diagram', code);
-        diagramRef.current.innerHTML = svg;
-        
-        // Auto-fit diagram with smart scaling
-        setTimeout(() => {
-          autoFitDiagram();
-        }, 150);
-      } catch (error) {
-        diagramRef.current.innerHTML = `<div style="color: red; padding: 20px;">Error: ${error.message}</div>`;
-      }
-    }
+    renderDiagramWithCode(code);
   };
 
-  const autoFitDiagram = () => {
+  const fitDiagramToScreen = () => {
     const container = diagramRef.current;
     const svgElement = container?.querySelector('svg');
     
     if (!svgElement || !container) return;
 
+    // Remove any SVG-level transforms
+    svgElement.style.transform = 'none';
+
     const containerRect = container.getBoundingClientRect();
+    // Minimal padding - take ENTIRE panel
+    const availableWidth = containerRect.width - 20;
+    const availableHeight = containerRect.height - 20;
+    
     const svgBBox = svgElement.getBBox();
+    const naturalWidth = svgBBox.width || svgElement.clientWidth || 400;
+    const naturalHeight = svgBBox.height || svgElement.clientHeight || 300;
     
-    // Account for container padding (16px each side)
-    const availableWidth = containerRect.width - 32;
-    const availableHeight = containerRect.height - 32;
-    
-    // Use bounding box for more accurate sizing
-    const actualWidth = svgBBox.width;
-    const actualHeight = svgBBox.height;
-    
-    if (actualWidth > 0 && actualHeight > 0) {
-      // Calculate scale to MAXIMIZE diagram size - use the full available space!
-      const scaleX = availableWidth / actualWidth;
-      const scaleY = availableHeight / actualHeight;
+    if (naturalWidth > 0 && naturalHeight > 0) {
+      // Calculate individual scale factors
+      const scaleX = (availableWidth / naturalWidth) * 0.98;
+      const scaleY = (availableHeight / naturalHeight) * 0.98;
       
-      // Use the smaller scale to ensure it fits but FILLS the space
-      const maxScale = Math.min(scaleX, scaleY);
+      // Check aspect ratio difference to decide on stretching
+      const aspectRatioContainer = availableWidth / availableHeight;
+      const aspectRatioDiagram = naturalWidth / naturalHeight;
+      const aspectDifference = Math.abs(aspectRatioContainer - aspectRatioDiagram);
       
-      // Apply the maximum scale that fits (no artificial limits!)
-      setZoom(maxScale);
+      if (aspectDifference > 0.2) {
+        // Different aspect ratios - stretch only the dimension that needs it
+        if (aspectRatioDiagram > aspectRatioContainer) {
+          // Diagram is wider than container - only stretch height, keep width at natural size
+          svgElement.style.transform = `scale(1, ${scaleY})`;
+        } else {
+          // Diagram is taller than container - only stretch width, keep height at natural size
+          svgElement.style.transform = `scale(${scaleX}, 1)`;
+        }
+        svgElement.style.transformOrigin = 'center center';
+        
+        // Ensure the diagram stays centered and visible
+        const parent = svgElement.parentElement;
+        if (parent) {
+          parent.style.display = 'flex';
+          parent.style.alignItems = 'center';
+          parent.style.justifyContent = 'center';
+          parent.style.overflow = 'visible';
+        }
+        
+        // Set zoom to 1 - SVG is already properly scaled
+        setZoom(1);
+      } else {
+        // Similar aspect ratios - use uniform scaling
+        const uniformScale = Math.min(scaleX, scaleY);
+        setZoom(Math.max(uniformScale, 0.1));
+      }
     }
   };
 
@@ -773,7 +801,11 @@ function App() {
     setZoom(prev => Math.max(0.1, Math.min(5, prev * factor)));
   };
 
-  const resetZoom = () => setZoom(1);
+  const resetZoom = () => {
+    setTimeout(() => {
+      fitDiagramToScreen();
+    }, 50);
+  };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -781,8 +813,11 @@ function App() {
       setFileName(file.name);
       const reader = new FileReader();
       reader.onload = (e) => {
-        setCode(e.target.result);
-        setTimeout(renderDiagram, 100);
+        const newCode = e.target.result;
+        setCode(newCode);
+        setTimeout(() => {
+          renderDiagramWithCode(newCode);
+        }, 200);
       };
       reader.readAsText(file);
     }
@@ -817,10 +852,113 @@ function App() {
   };
 
   const loadExample = (exampleKey) => {
-    setCode(EXAMPLES[exampleKey]);
+    const newCode = EXAMPLES[exampleKey];
+    setCode(newCode);
     setCurrentExample(exampleKey);
     setFileName('');
-    setTimeout(renderDiagram, 100);
+    
+    // Use a more reliable approach with longer timeout and explicit code reference
+    setTimeout(() => {
+      renderDiagramWithCode(newCode);
+    }, 200);
+  };
+
+  const renderDiagramWithCode = async (diagramCode) => {
+    if (diagramRef.current && diagramCode && diagramCode.trim()) {
+      try {
+        // Re-initialize mermaid with pastel theme before each render
+        mermaid.initialize({ 
+          startOnLoad: false, 
+          theme: 'base',
+          themeVariables: {
+            // Vibrant but soft pastel colors for diagram shapes
+            primaryColor: '#c7d2fe',
+            primaryTextColor: '#475569',
+            primaryBorderColor: '#a5b4fc',
+            
+            // Secondary vibrant pink
+            secondaryColor: '#f9a8d4',
+            secondaryTextColor: '#475569',
+            secondaryBorderColor: '#f472b6',
+            
+            // Tertiary vibrant mint
+            tertiaryColor: '#86efac',
+            tertiaryTextColor: '#475569',
+            tertiaryBorderColor: '#4ade80',
+            
+            // Background and surfaces (light tints)
+            background: '#fefefe',
+            mainBkg: '#f8fafc',
+            secondBkg: '#c7d2fe',
+            tertiaryBkg: '#f9a8d4',
+            
+            // Shape backgrounds (vibrant pastels)
+            c0: '#c7d2fe',    // Vibrant lavender
+            c1: '#f9a8d4',    // Vibrant pink
+            c2: '#86efac',    // Vibrant mint
+            c3: '#fde047',    // Vibrant yellow
+            c4: '#7dd3fc',    // Vibrant sky
+            c5: '#fb7185',    // Vibrant rose
+            c6: '#2dd4bf',    // Vibrant teal
+            c7: '#facc15',    // Vibrant gold
+            
+            // Lines and borders (visible)
+            lineColor: '#a5b4fc',
+            primaryBorderColor: '#a5b4fc',
+            secondaryBorderColor: '#f472b6',
+            
+            // Section backgrounds (colorful)
+            sectionBkgColor: '#c7d2fe',
+            altSectionBkgColor: '#f9a8d4',
+            
+            // Grid and accents (vibrant)
+            gridColor: '#cbd5e1',
+            cScale0: '#c7d2fe',
+            cScale1: '#f9a8d4',
+            cScale2: '#86efac',
+            cScale3: '#fde047',
+            cScale4: '#7dd3fc',
+            cScale5: '#fb7185',
+            cScale6: '#2dd4bf',
+            cScale7: '#facc15',
+            
+            // Node and shape fills (vibrant pastels)
+            fill0: '#c7d2fe',
+            fill1: '#f9a8d4',
+            fill2: '#86efac',
+            fill3: '#fde047',
+            fill4: '#7dd3fc',
+            fill5: '#fb7185',
+            fill6: '#2dd4bf',
+            fill7: '#facc15',
+            
+            // Pie chart colors (vibrant pastels)
+            pie1: '#c7d2fe',
+            pie2: '#f9a8d4', 
+            pie3: '#86efac',
+            pie4: '#fde047',
+            pie5: '#7dd3fc',
+            pie6: '#fb7185',
+            pie7: '#2dd4bf',
+            pie8: '#facc15',
+            pie9: '#c084fc',
+            pie10: '#fbbf24',
+            pie11: '#34d399',
+            pie12: '#60a5fa'
+          }
+        });
+        
+        const { svg } = await mermaid.render('diagram', diagramCode);
+        diagramRef.current.innerHTML = svg;
+        
+        // Fit diagram to screen without cutting off
+        setTimeout(() => {
+          fitDiagramToScreen();
+        }, 100);
+      } catch (error) {
+        diagramRef.current.innerHTML = `<div style="color: red; padding: 20px;">Error: ${error.message}</div>`;
+      }
+    }
   };
 
   return (
@@ -879,63 +1017,30 @@ function App() {
       
       <div className="main">
         {showEditor && (
-          <div className="editor">
-            <div className="file-controls">
-              <button 
-                onClick={() => setShowEditor(!showEditor)} 
-                className="btn btn-accent editor-toggle"
-                title={showEditor ? 'Hide code editor' : 'Show code editor'}
-              >
-                {showEditor ? '⬅ Hide' : '➡ Show'}
-              </button>
-              <button 
-                onClick={() => setShowExamples(!showExamples)} 
-                className="btn btn-secondary"
-              >
-                {showExamples ? '📝 Code' : '🎨 Examples'}
-              </button>
-              {fileName && <span className="file-name">{fileName}</span>}
-            </div>
-            {showExamples ? (
-              <div className="examples-browser">
-                <h3>Showcase Diagrams</h3>
-                <div className="examples-list">
-                  {Object.entries(EXAMPLE_CATEGORIES).map(([category, examples]) => (
-                    <div key={category} className="example-category">
-                      <h4>{category}</h4>
-                      <div className="example-buttons">
-                        {Object.entries(examples).map(([name, code]) => {
-                          const key = name.toLowerCase().replace(/\s+/g, '_');
-                          return (
-                            <button 
-                              key={key}
-                              onClick={() => {
-                                loadExample(key);
-                                setShowExamples(false);
-                              }}
-                              className={currentExample === key ? 'active' : ''}
-                              title={`${name} - ${category}`}
-                            >
-                              {name}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <textarea
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="Enter Mermaid diagram code..."
-              />
-            )}
-          </div>
+          <Sidebar
+            showExamples={showExamples}
+            setShowExamples={setShowExamples}
+            showEditor={showEditor}
+            setShowEditor={setShowEditor}
+            fileName={fileName}
+            code={code}
+            setCode={setCode}
+            currentExample={currentExample}
+            loadExample={loadExample}
+            EXAMPLE_CATEGORIES={EXAMPLE_CATEGORIES}
+          />
         )}
         
         <div className={`preview ${!showEditor ? 'preview-full' : ''}`}>
+          {!showEditor && (
+            <button 
+              onClick={() => setShowEditor(true)} 
+              className="show-editor-btn"
+              title="Show code editor"
+            >
+              ➡ Show Editor
+            </button>
+          )}
           <div 
             ref={diagramRef}
             className="diagram"
