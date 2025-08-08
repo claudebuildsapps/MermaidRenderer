@@ -654,22 +654,73 @@ function App() {
       startOnLoad: false, 
       theme: 'base',
       themeVariables: {
-        primaryColor: '#fef3c7',
-        primaryTextColor: '#92400e',
-        primaryBorderColor: '#f59e0b',
-        lineColor: '#d1d5db',
-        sectionBkgColor: '#fef3c7',
-        altSectionBkgColor: '#fde68a',
-        gridColor: '#e5e7eb',
-        secondaryColor: '#ddd6fe',
-        tertiaryColor: '#fce7f3',
-        background: '#ffffff',
-        mainBkg: '#f9fafb',
-        secondBkg: '#f3f4f6',
-        tertiaryBkg: '#e5e7eb'
+        // Primary pastel purple
+        primaryColor: '#a78bfa',
+        primaryTextColor: '#334155',
+        primaryBorderColor: '#8b5cf6',
+        
+        // Secondary pastel pink
+        secondaryColor: '#f472b6',
+        secondaryTextColor: '#334155',
+        secondaryBorderColor: '#ec4899',
+        
+        // Tertiary pastel mint
+        tertiaryColor: '#6ee7b7',
+        tertiaryTextColor: '#334155',
+        tertiaryBorderColor: '#34d399',
+        
+        // Background and surfaces
+        background: '#fefefe',
+        mainBkg: '#f8fafc',
+        secondBkg: '#f1f5f9',
+        tertiaryBkg: '#e0e7ff',
+        
+        // Lines and borders
+        lineColor: '#8b5cf6',
+        primaryBorderColor: '#a78bfa',
+        secondaryBorderColor: '#f472b6',
+        
+        // Section backgrounds
+        sectionBkgColor: '#e0e7ff',
+        altSectionBkgColor: '#fce7f3',
+        
+        // Grid and accents
+        gridColor: '#e2e8f0',
+        cScale0: '#a78bfa',
+        cScale1: '#f472b6',
+        cScale2: '#6ee7b7',
+        cScale3: '#fbbf24',
+        cScale4: '#8b5cf6',
+        cScale5: '#ec4899',
+        cScale6: '#34d399',
+        cScale7: '#f59e0b',
+        
+        // Pie chart colors
+        pie1: '#a78bfa',
+        pie2: '#f472b6', 
+        pie3: '#6ee7b7',
+        pie4: '#fbbf24',
+        pie5: '#8b5cf6',
+        pie6: '#ec4899',
+        pie7: '#34d399',
+        pie8: '#f59e0b',
+        pie9: '#e0e7ff',
+        pie10: '#fce7f3',
+        pie11: '#d1fae5',
+        pie12: '#fef3c7'
       }
     });
     renderDiagram();
+
+    // Re-fit diagram on window resize
+    const handleResize = () => {
+      if (diagramRef.current?.querySelector('svg')) {
+        setTimeout(autoFitDiagram, 200);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const renderDiagram = async () => {
@@ -694,12 +745,6 @@ function App() {
     
     if (!svgElement || !container) return;
 
-    // Reset zoom first to get true dimensions
-    const tempZoom = zoom;
-    if (zoom !== 1) {
-      svgElement.style.transform = 'scale(1)';
-    }
-
     const containerRect = container.getBoundingClientRect();
     const svgBBox = svgElement.getBBox();
     
@@ -712,31 +757,16 @@ function App() {
     const actualHeight = svgBBox.height;
     
     if (actualWidth > 0 && actualHeight > 0) {
-      // Calculate optimal scale
+      // Calculate scale to MAXIMIZE diagram size - use the full available space!
       const scaleX = availableWidth / actualWidth;
       const scaleY = availableHeight / actualHeight;
-      const optimalScale = Math.min(scaleX, scaleY);
       
-      // Apply scale with some padding margin (95% of optimal)
-      const finalScale = Math.min(optimalScale * 0.95, 1);
+      // Use the smaller scale to ensure it fits but FILLS the space
+      const maxScale = Math.min(scaleX, scaleY);
       
-      if (finalScale !== tempZoom) {
-        setZoom(finalScale);
-      }
-    } else {
-      // Fallback to container-based scaling
-      const svgRect = svgElement.getBoundingClientRect();
-      const scaleX = availableWidth / svgRect.width;
-      const scaleY = availableHeight / svgRect.height;
-      const autoScale = Math.min(scaleX, scaleY, 1);
-      
-      if (autoScale < 1) {
-        setZoom(autoScale * 0.9); // 10% margin for safety
-      } else {
-        setZoom(1);
-      }
+      // Apply the maximum scale that fits (no artificial limits!)
+      setZoom(maxScale);
     }
-  };
   };
 
   const handleZoom = (factor) => {
@@ -798,7 +828,7 @@ function App() {
       <header className="app-header">
         <h1>MermaidRenderer</h1>
         <div className="header-controls">
-          <button onClick={renderDiagram} className="btn btn-success">
+          <button onClick={renderDiagram} className="btn btn-primary">
             ⚡ Render
           </button>
           <input
@@ -809,13 +839,13 @@ function App() {
             className="file-input"
             id="file-input"
           />
-          <label htmlFor="file-input" className="btn btn-secondary">
+          <label htmlFor="file-input" className="btn btn-accent">
             📁 Open File
           </label>
-          <button onClick={downloadFile} className="btn btn-secondary">
+          <button onClick={downloadFile} className="btn btn-success">
             💾 Save .mmd
           </button>
-          <button onClick={downloadSVG} className="btn btn-primary">
+          <button onClick={downloadSVG} className="btn btn-success">
             📤 Export SVG
           </button>
           <div className="zoom-controls">
