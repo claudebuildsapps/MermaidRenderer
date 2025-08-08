@@ -1,28 +1,28 @@
 :root {
-  /* Soft Pastel Color Palette */
-  --primary: #a78bfa;
-  --primary-hover: #8b5cf6;
-  --primary-light: #e0e7ff;
-  --secondary: #f472b6;
-  --secondary-hover: #ec4899;
-  --secondary-light: #fce7f3;
-  --success: #6ee7b7;
-  --success-hover: #34d399;
-  --success-light: #d1fae5;
-  --accent: #fbbf24;
-  --accent-hover: #f59e0b;
-  --accent-light: #fef3c7;
+  /* Ultra-Light Pastel Color Palette */
+  --primary: #e0e7ff;
+  --primary-hover: #c7d2fe;
+  --primary-light: #f0f4ff;
+  --secondary: #fce7f3;
+  --secondary-hover: #f9d6e7;
+  --secondary-light: #fef7f3;
+  --success: #d1fae5;
+  --success-hover: #bbf7d0;
+  --success-light: #ecfdf5;
+  --accent: #fef3c7;
+  --accent-hover: #fde68a;
+  --accent-light: #fffbeb;
   --background: #fefefe;
-  --surface: #f8fafc;
-  --surface-soft: #f1f5f9;
-  --border: #e2e8f0;
-  --border-soft: #f1f5f9;
-  --text-primary: #334155;
+  --surface: #fcfcfd;
+  --surface-soft: #f8fafc;
+  --border: #f1f5f9;
+  --border-soft: #f8fafc;
+  --text-primary: #475569;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
-  --shadow: 0 1px 3px 0 rgba(100, 116, 139, 0.1), 0 1px 2px 0 rgba(100, 116, 139, 0.06);
-  --shadow-lg: 0 4px 6px -1px rgba(100, 116, 139, 0.1), 0 2px 4px -1px rgba(100, 116, 139, 0.06);
-  --shadow-soft: 0 1px 3px 0 rgba(148, 163, 184, 0.1);
+  --shadow: 0 1px 3px 0 rgba(148, 163, 184, 0.06), 0 1px 2px 0 rgba(148, 163, 184, 0.04);
+  --shadow-lg: 0 2px 4px -1px rgba(148, 163, 184, 0.08), 0 1px 3px -1px rgba(148, 163, 184, 0.06);
+  --shadow-soft: 0 1px 2px 0 rgba(148, 163, 184, 0.05);
   --radius: 12px;
   --radius-sm: 8px;
   --spacing-xs: 4px;
@@ -152,50 +152,54 @@
 
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-  color: white;
-  border-color: var(--primary);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  border-color: var(--primary-hover);
+  text-shadow: none;
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, var(--primary-hover), var(--primary));
   border-color: var(--primary-hover);
+  color: var(--text-primary);
 }
 
 .btn-secondary {
   background: linear-gradient(135deg, var(--secondary), var(--secondary-hover));
-  color: white;
-  border-color: var(--secondary);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  border-color: var(--secondary-hover);
+  text-shadow: none;
 }
 
 .btn-secondary:hover {
   background: linear-gradient(135deg, var(--secondary-hover), var(--secondary));
   border-color: var(--secondary-hover);
+  color: var(--text-primary);
 }
 
 .btn-success {
   background: linear-gradient(135deg, var(--success), var(--success-hover));
-  color: white;
-  border-color: var(--success);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  border-color: var(--success-hover);
+  text-shadow: none;
 }
 
 .btn-success:hover {
   background: linear-gradient(135deg, var(--success-hover), var(--success));
   border-color: var(--success-hover);
+  color: var(--text-primary);
 }
 
 .btn-accent {
   background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-  color: white;
-  border-color: var(--accent);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  border-color: var(--accent-hover);
+  text-shadow: none;
 }
 
 .btn-accent:hover {
   background: linear-gradient(135deg, var(--accent-hover), var(--accent));
   border-color: var(--accent-hover);
+  color: var(--text-primary);
 }
 
 .main {
