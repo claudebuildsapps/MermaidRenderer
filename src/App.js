@@ -678,38 +678,65 @@ function App() {
         const { svg } = await mermaid.render('diagram', code);
         diagramRef.current.innerHTML = svg;
         
-        // Auto-scale if diagram overflows
+        // Auto-fit diagram with smart scaling
         setTimeout(() => {
-          const svgElement = diagramRef.current?.querySelector('svg');
-          const container = diagramRef.current;
-          
-          if (svgElement && container) {
-            const containerRect = container.getBoundingClientRect();
-            const svgRect = svgElement.getBoundingClientRect();
-            
-            // Get container dimensions (accounting for padding)
-            const containerWidth = containerRect.width - 64; // 32px padding on each side
-            const containerHeight = containerRect.height - 64;
-            
-            // Check if SVG overflows container
-            const scaleX = containerWidth / svgRect.width;
-            const scaleY = containerHeight / svgRect.height;
-            const autoScale = Math.min(scaleX, scaleY, 1); // Don't scale up, only down
-            
-            if (autoScale < 1) {
-              // Apply auto-scaling
-              setZoom(autoScale);
-            } else if (zoom !== 1 && autoScale >= 1) {
-              // Reset zoom if diagram fits without scaling
-              setZoom(1);
-            }
-          }
-        }, 100);
-        
+          autoFitDiagram();
+        }, 150);
       } catch (error) {
         diagramRef.current.innerHTML = `<div style="color: red; padding: 20px;">Error: ${error.message}</div>`;
       }
     }
+  };
+
+  const autoFitDiagram = () => {
+    const container = diagramRef.current;
+    const svgElement = container?.querySelector('svg');
+    
+    if (!svgElement || !container) return;
+
+    // Reset zoom first to get true dimensions
+    const tempZoom = zoom;
+    if (zoom !== 1) {
+      svgElement.style.transform = 'scale(1)';
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const svgBBox = svgElement.getBBox();
+    
+    // Account for container padding (16px each side)
+    const availableWidth = containerRect.width - 32;
+    const availableHeight = containerRect.height - 32;
+    
+    // Use bounding box for more accurate sizing
+    const actualWidth = svgBBox.width;
+    const actualHeight = svgBBox.height;
+    
+    if (actualWidth > 0 && actualHeight > 0) {
+      // Calculate optimal scale
+      const scaleX = availableWidth / actualWidth;
+      const scaleY = availableHeight / actualHeight;
+      const optimalScale = Math.min(scaleX, scaleY);
+      
+      // Apply scale with some padding margin (95% of optimal)
+      const finalScale = Math.min(optimalScale * 0.95, 1);
+      
+      if (finalScale !== tempZoom) {
+        setZoom(finalScale);
+      }
+    } else {
+      // Fallback to container-based scaling
+      const svgRect = svgElement.getBoundingClientRect();
+      const scaleX = availableWidth / svgRect.width;
+      const scaleY = availableHeight / svgRect.height;
+      const autoScale = Math.min(scaleX, scaleY, 1);
+      
+      if (autoScale < 1) {
+        setZoom(autoScale * 0.9); // 10% margin for safety
+      } else {
+        setZoom(1);
+      }
+    }
+  };
   };
 
   const handleZoom = (factor) => {
