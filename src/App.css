@@ -1,18 +1,30 @@
 :root {
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --secondary: #64748b;
-  --secondary-hover: #475569;
-  --success: #10b981;
-  --success-hover: #059669;
-  --background: #ffffff;
+  /* Soft Pastel Color Palette */
+  --primary: #a78bfa;
+  --primary-hover: #8b5cf6;
+  --primary-light: #e0e7ff;
+  --secondary: #f472b6;
+  --secondary-hover: #ec4899;
+  --secondary-light: #fce7f3;
+  --success: #6ee7b7;
+  --success-hover: #34d399;
+  --success-light: #d1fae5;
+  --accent: #fbbf24;
+  --accent-hover: #f59e0b;
+  --accent-light: #fef3c7;
+  --background: #fefefe;
   --surface: #f8fafc;
+  --surface-soft: #f1f5f9;
   --border: #e2e8f0;
-  --text-primary: #0f172a;
+  --border-soft: #f1f5f9;
+  --text-primary: #334155;
   --text-secondary: #64748b;
-  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --radius: 8px;
+  --text-muted: #94a3b8;
+  --shadow: 0 1px 3px 0 rgba(100, 116, 139, 0.1), 0 1px 2px 0 rgba(100, 116, 139, 0.06);
+  --shadow-lg: 0 4px 6px -1px rgba(100, 116, 139, 0.1), 0 2px 4px -1px rgba(100, 116, 139, 0.06);
+  --shadow-soft: 0 1px 3px 0 rgba(148, 163, 184, 0.1);
+  --radius: 12px;
+  --radius-sm: 8px;
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -25,28 +37,32 @@
   display: flex;
   flex-direction: column;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background), var(--surface));
   color: var(--text-primary);
 }
 
 .app-header {
-  background: var(--surface);
+  background: linear-gradient(135deg, var(--surface), var(--surface-soft));
   color: var(--text-primary);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
+  box-shadow: var(--shadow-soft);
 }
 
 .app-header h1 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--text-secondary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header-controls {
@@ -62,8 +78,9 @@
   gap: var(--spacing-xs);
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   padding: var(--spacing-xs);
+  box-shadow: var(--shadow-soft);
 }
 
 .zoom-controls .btn {
@@ -71,7 +88,8 @@
   box-shadow: none;
   background: transparent;
   color: var(--text-secondary);
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: calc(var(--radius-sm) - 2px);
+  min-width: auto;
 }
 
 .zoom-controls .btn:hover {
@@ -88,60 +106,97 @@
   font-size: 13px;
 }
 
-
 .btn {
-  border: none;
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xs);
   text-decoration: none;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-soft);
   min-width: 100px;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 .btn:active {
-  transform: translateY(0);
+  transform: translateY(-1px);
+  transition: all 0.1s ease;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
   color: white;
+  border-color: var(--primary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+  border-color: var(--primary-hover);
 }
 
 .btn-secondary {
-  background: var(--secondary);
+  background: linear-gradient(135deg, var(--secondary), var(--secondary-hover));
   color: white;
+  border-color: var(--secondary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary:hover {
-  background: var(--secondary-hover);
+  background: linear-gradient(135deg, var(--secondary-hover), var(--secondary));
+  border-color: var(--secondary-hover);
 }
 
 .btn-success {
-  background: var(--success);
+  background: linear-gradient(135deg, var(--success), var(--success-hover));
   color: white;
+  border-color: var(--success);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-success:hover {
-  background: var(--success-hover);
+  background: linear-gradient(135deg, var(--success-hover), var(--success));
+  border-color: var(--success-hover);
 }
 
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  color: white;
+  border-color: var(--accent);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-accent:hover {
+  background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+  border-color: var(--accent-hover);
+}
 
 .main {
   flex: 1;
@@ -152,17 +207,19 @@
 .examples-browser {
   flex: 1;
   padding: var(--spacing-md);
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background), var(--surface));
   overflow-y: auto;
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-xs);
 }
 
 .examples-browser h3 {
   margin-bottom: var(--spacing-md);
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--primary-light);
   padding-bottom: var(--spacing-sm);
 }
 
@@ -173,9 +230,11 @@
 }
 
 .example-category {
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--background);
 }
 
 .example-category h4 {
@@ -184,7 +243,7 @@
   color: var(--text-primary);
   margin: 0;
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--surface);
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--border);
@@ -198,33 +257,36 @@
 }
 
 .example-buttons button {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background), var(--surface));
   border: 1px solid var(--border);
   color: var(--text-secondary);
   padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: calc(var(--radius) / 2);
+  border-radius: calc(var(--radius-sm) / 2);
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   flex: 1;
   min-width: 120px;
+  box-shadow: var(--shadow-soft);
 }
 
 .example-buttons button:hover {
-  background: var(--surface);
+  background: linear-gradient(135deg, var(--surface), var(--surface-soft));
   border-color: var(--secondary);
   color: var(--text-primary);
+  transform: translateY(-1px);
 }
 
 .example-buttons button.active {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
   border-color: var(--primary);
   color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .example-buttons button.active:hover {
-  background: var(--primary-hover);
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
   border-color: var(--primary-hover);
 }
 
@@ -234,7 +296,8 @@
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background), var(--surface));
+  box-shadow: var(--shadow-soft);
 }
 
 .file-controls {
@@ -243,7 +306,7 @@
   gap: var(--spacing-sm);
   align-items: center;
   flex-wrap: wrap;
-  background: var(--surface);
+  background: linear-gradient(135deg, var(--surface), var(--surface-soft));
   border-bottom: 1px solid var(--border);
 }
 
@@ -262,9 +325,10 @@
   color: var(--text-secondary);
   font-style: italic;
   padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--background);
-  border-radius: calc(var(--radius) / 2);
-  border: 1px solid var(--border);
+  background: var(--accent-light);
+  border-radius: calc(var(--radius-sm) / 2);
+  border: 1px solid var(--accent);
+  box-shadow: var(--shadow-soft);
 }
 
 .editor textarea {
@@ -282,13 +346,13 @@
 }
 
 .editor textarea::placeholder {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   opacity: 0.7;
 }
 
 .preview {
   flex: 1;
-  background: var(--surface);
+  background: linear-gradient(135deg, var(--surface), var(--surface-soft));
   overflow: hidden;
   padding: var(--spacing-sm);
   display: flex;
@@ -303,26 +367,27 @@
 
 .diagram {
   background: var(--background);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-md);
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
   transform-origin: center;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
+  height: 100%;
   max-width: none;
-  min-height: 500px;
+  max-height: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   overflow: visible;
 }
 
 .diagram svg {
-  width: 100%;
-  height: auto;
-  min-height: 400px;
   max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
 }
 
 /* Responsive Design */
@@ -331,11 +396,6 @@
     width: 35%;
     min-width: 300px;
   }
-  
-  .controls {
-    padding: var(--spacing-sm) var(--spacing-md);
-  }
-  
 }
 
 @media (max-width: 768px) {
@@ -353,11 +413,18 @@
     height: 50vh;
   }
   
-  
   .app-header {
     padding: var(--spacing-md) var(--spacing-lg);
   }
   
+  .header-controls {
+    gap: var(--spacing-sm);
+  }
+  
+  .btn {
+    min-width: 80px;
+    font-size: 13px;
+  }
 }
 
 /* Dark mode support */
@@ -365,11 +432,40 @@
   :root {
     --background: #0f172a;
     --surface: #1e293b;
-    --border: #334155;
+    --surface-soft: #334155;
+    --border: #475569;
     --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
   }
 }
+
+/* Color Utility Classes */
+.bg-primary { background-color: var(--primary) !important; }
+.bg-primary-light { background-color: var(--primary-light) !important; }
+.bg-secondary { background-color: var(--secondary) !important; }
+.bg-secondary-light { background-color: var(--secondary-light) !important; }
+.bg-success { background-color: var(--success) !important; }
+.bg-success-light { background-color: var(--success-light) !important; }
+.bg-accent { background-color: var(--accent) !important; }
+.bg-accent-light { background-color: var(--accent-light) !important; }
+.bg-surface { background-color: var(--surface) !important; }
+.bg-surface-soft { background-color: var(--surface-soft) !important; }
+
+.text-primary-color { color: var(--primary) !important; }
+.text-secondary-color { color: var(--secondary) !important; }
+.text-success-color { color: var(--success) !important; }
+.text-accent-color { color: var(--accent) !important; }
+
+.border-primary { border-color: var(--primary) !important; }
+.border-secondary { border-color: var(--secondary) !important; }
+.border-success { border-color: var(--success) !important; }
+.border-accent { border-color: var(--accent) !important; }
+
+.gradient-primary { background: linear-gradient(135deg, var(--primary), var(--primary-hover)) !important; }
+.gradient-secondary { background: linear-gradient(135deg, var(--secondary), var(--secondary-hover)) !important; }
+.gradient-success { background: linear-gradient(135deg, var(--success), var(--success-hover)) !important; }
+.gradient-accent { background: linear-gradient(135deg, var(--accent), var(--accent-hover)) !important; }
 
 * {
   margin: 0;
