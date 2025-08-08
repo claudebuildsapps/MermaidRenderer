@@ -654,60 +654,60 @@ function App() {
       startOnLoad: false, 
       theme: 'base',
       themeVariables: {
-        // Primary pastel purple
-        primaryColor: '#a78bfa',
-        primaryTextColor: '#334155',
-        primaryBorderColor: '#8b5cf6',
+        // Ultra-light pastel colors
+        primaryColor: '#e0e7ff',
+        primaryTextColor: '#475569',
+        primaryBorderColor: '#c7d2fe',
         
-        // Secondary pastel pink
-        secondaryColor: '#f472b6',
-        secondaryTextColor: '#334155',
-        secondaryBorderColor: '#ec4899',
+        // Secondary ultra-light pink
+        secondaryColor: '#fce7f3',
+        secondaryTextColor: '#475569',
+        secondaryBorderColor: '#f9d6e7',
         
-        // Tertiary pastel mint
-        tertiaryColor: '#6ee7b7',
-        tertiaryTextColor: '#334155',
-        tertiaryBorderColor: '#34d399',
+        // Tertiary ultra-light mint
+        tertiaryColor: '#d1fae5',
+        tertiaryTextColor: '#475569',
+        tertiaryBorderColor: '#bbf7d0',
         
         // Background and surfaces
         background: '#fefefe',
-        mainBkg: '#f8fafc',
-        secondBkg: '#f1f5f9',
-        tertiaryBkg: '#e0e7ff',
+        mainBkg: '#fcfcfd',
+        secondBkg: '#f8fafc',
+        tertiaryBkg: '#f0f4ff',
         
-        // Lines and borders
-        lineColor: '#8b5cf6',
-        primaryBorderColor: '#a78bfa',
-        secondaryBorderColor: '#f472b6',
+        // Lines and borders (very subtle)
+        lineColor: '#c7d2fe',
+        primaryBorderColor: '#e0e7ff',
+        secondaryBorderColor: '#fce7f3',
         
-        // Section backgrounds
-        sectionBkgColor: '#e0e7ff',
-        altSectionBkgColor: '#fce7f3',
+        // Section backgrounds (extremely light)
+        sectionBkgColor: '#f0f4ff',
+        altSectionBkgColor: '#fef7f3',
         
-        // Grid and accents
-        gridColor: '#e2e8f0',
-        cScale0: '#a78bfa',
-        cScale1: '#f472b6',
-        cScale2: '#6ee7b7',
-        cScale3: '#fbbf24',
-        cScale4: '#8b5cf6',
-        cScale5: '#ec4899',
-        cScale6: '#34d399',
-        cScale7: '#f59e0b',
+        // Grid and accents (very subtle)
+        gridColor: '#f1f5f9',
+        cScale0: '#e0e7ff',
+        cScale1: '#fce7f3',
+        cScale2: '#d1fae5',
+        cScale3: '#fef3c7',
+        cScale4: '#c7d2fe',
+        cScale5: '#f9d6e7',
+        cScale6: '#bbf7d0',
+        cScale7: '#fde68a',
         
-        // Pie chart colors
-        pie1: '#a78bfa',
-        pie2: '#f472b6', 
-        pie3: '#6ee7b7',
-        pie4: '#fbbf24',
-        pie5: '#8b5cf6',
-        pie6: '#ec4899',
-        pie7: '#34d399',
-        pie8: '#f59e0b',
-        pie9: '#e0e7ff',
-        pie10: '#fce7f3',
-        pie11: '#d1fae5',
-        pie12: '#fef3c7'
+        // Pie chart colors (ultra-light pastels)
+        pie1: '#e0e7ff',
+        pie2: '#fce7f3', 
+        pie3: '#d1fae5',
+        pie4: '#fef3c7',
+        pie5: '#c7d2fe',
+        pie6: '#f9d6e7',
+        pie7: '#bbf7d0',
+        pie8: '#fde68a',
+        pie9: '#f0f4ff',
+        pie10: '#fef7f3',
+        pie11: '#ecfdf5',
+        pie12: '#fffbeb'
       }
     });
     renderDiagram();
