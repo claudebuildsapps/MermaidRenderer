@@ -75,3 +75,4 @@ tmp/
 # macOS specific
 .Trashes
 .fseventsd
+.vercel
