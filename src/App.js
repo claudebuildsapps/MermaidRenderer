@@ -645,11 +645,30 @@ function App() {
   const [zoom, setZoom] = useState(1);
   const [fileName, setFileName] = useState('');
   const [showExamples, setShowExamples] = useState(false);
+  const [showEditor, setShowEditor] = useState(true);
   const diagramRef = useRef();
   const fileInputRef = useRef();
 
   useEffect(() => {
-    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    mermaid.initialize({ 
+      startOnLoad: false, 
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#fef3c7',
+        primaryTextColor: '#92400e',
+        primaryBorderColor: '#f59e0b',
+        lineColor: '#d1d5db',
+        sectionBkgColor: '#fef3c7',
+        altSectionBkgColor: '#fde68a',
+        gridColor: '#e5e7eb',
+        secondaryColor: '#ddd6fe',
+        tertiaryColor: '#fce7f3',
+        background: '#ffffff',
+        mainBkg: '#f9fafb',
+        secondBkg: '#f3f4f6',
+        tertiaryBkg: '#e5e7eb'
+      }
+    });
     renderDiagram();
   }, []);
 
@@ -658,6 +677,35 @@ function App() {
       try {
         const { svg } = await mermaid.render('diagram', code);
         diagramRef.current.innerHTML = svg;
+        
+        // Auto-scale if diagram overflows
+        setTimeout(() => {
+          const svgElement = diagramRef.current?.querySelector('svg');
+          const container = diagramRef.current;
+          
+          if (svgElement && container) {
+            const containerRect = container.getBoundingClientRect();
+            const svgRect = svgElement.getBoundingClientRect();
+            
+            // Get container dimensions (accounting for padding)
+            const containerWidth = containerRect.width - 64; // 32px padding on each side
+            const containerHeight = containerRect.height - 64;
+            
+            // Check if SVG overflows container
+            const scaleX = containerWidth / svgRect.width;
+            const scaleY = containerHeight / svgRect.height;
+            const autoScale = Math.min(scaleX, scaleY, 1); // Don't scale up, only down
+            
+            if (autoScale < 1) {
+              // Apply auto-scaling
+              setZoom(autoScale);
+            } else if (zoom !== 1 && autoScale >= 1) {
+              // Reset zoom if diagram fits without scaling
+              setZoom(1);
+            }
+          }
+        }, 100);
+        
       } catch (error) {
         diagramRef.current.innerHTML = `<div style="color: red; padding: 20px;">Error: ${error.message}</div>`;
       }
@@ -721,12 +769,8 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🧜‍♀️ MermaidRenderer</h1>
-        <p>Interactive Mermaid.js diagram editor and renderer</p>
-      </header>
-      
-      <div className="controls">
-        <div className="controls-left">
+        <h1>MermaidRenderer</h1>
+        <div className="header-controls">
           <button onClick={renderDiagram} className="btn btn-success">
             ⚡ Render
           </button>
@@ -736,9 +780,23 @@ function App() {
           >
             {showExamples ? '📝 Hide Examples' : '🎨 Show Examples'}
           </button>
-        </div>
-        
-        <div className="controls-right">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".mmd,.md,.txt"
+            onChange={handleFileUpload}
+            className="file-input"
+            id="file-input"
+          />
+          <label htmlFor="file-input" className="btn btn-secondary">
+            📁 Open File
+          </label>
+          <button onClick={downloadFile} className="btn btn-secondary">
+            💾 Save .mmd
+          </button>
+          <button onClick={downloadSVG} className="btn btn-primary">
+            📤 Export SVG
+          </button>
           <div className="zoom-controls">
             <button 
               onClick={() => handleZoom(0.8)} 
@@ -764,7 +822,8 @@ function App() {
             </button>
           </div>
         </div>
-      </div>
+      </header>
+      
       
       {showExamples && (
         <div className="examples">
@@ -793,35 +852,27 @@ function App() {
       )}
       
       <div className="main">
-        <div className="editor">
-          <div className="file-controls">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".mmd,.md,.txt"
-              onChange={handleFileUpload}
-              className="file-input"
-              id="file-input"
+        {showEditor && (
+          <div className="editor">
+            <div className="file-controls">
+              <button 
+                onClick={() => setShowEditor(!showEditor)} 
+                className="btn btn-secondary editor-toggle"
+                title={showEditor ? 'Hide code editor' : 'Show code editor'}
+              >
+                {showEditor ? '⬅ Hide' : '➡ Show'}
+              </button>
+              {fileName && <span className="file-name">{fileName}</span>}
+            </div>
+            <textarea
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="Enter Mermaid diagram code..."
             />
-            <label htmlFor="file-input" className="btn btn-secondary">
-              📁 Open File
-            </label>
-            <button onClick={downloadFile} className="btn btn-secondary">
-              💾 Save .mmd
-            </button>
-            <button onClick={downloadSVG} className="btn btn-primary">
-              📤 Export SVG
-            </button>
-            {fileName && <span className="file-name">{fileName}</span>}
           </div>
-          <textarea
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="Enter Mermaid diagram code..."
-          />
-        </div>
+        )}
         
-        <div className="preview">
+        <div className={`preview ${!showEditor ? 'preview-full' : ''}`}>
           <div 
             ref={diagramRef}
             className="diagram"
