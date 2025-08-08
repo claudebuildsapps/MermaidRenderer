@@ -828,8 +828,8 @@ function App() {
       <header className="app-header">
         <h1>MermaidRenderer</h1>
         <div className="header-controls">
-          <button onClick={renderDiagram} className="btn btn-primary">
-            ⚡ Render
+          <button onClick={renderDiagram} className="btn btn-success">
+            Render
           </button>
           <input
             ref={fileInputRef}
@@ -839,14 +839,14 @@ function App() {
             className="file-input"
             id="file-input"
           />
-          <label htmlFor="file-input" className="btn btn-accent">
-            📁 Open File
+          <label htmlFor="file-input" className="btn btn-secondary">
+            Open File
           </label>
-          <button onClick={downloadFile} className="btn btn-success">
-            💾 Save .mmd
+          <button onClick={downloadFile} className="btn btn-secondary">
+            Save .mmd
           </button>
-          <button onClick={downloadSVG} className="btn btn-success">
-            📤 Export SVG
+          <button onClick={downloadSVG} className="btn btn-primary">
+            Export SVG
           </button>
           <div className="zoom-controls">
             <button 
@@ -883,7 +883,7 @@ function App() {
             <div className="file-controls">
               <button 
                 onClick={() => setShowEditor(!showEditor)} 
-                className="btn btn-secondary editor-toggle"
+                className="btn btn-accent editor-toggle"
                 title={showEditor ? 'Hide code editor' : 'Show code editor'}
               >
                 {showEditor ? '⬅ Hide' : '➡ Show'}
